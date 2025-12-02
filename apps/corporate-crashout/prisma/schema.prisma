@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TradingViewAccess {
+  PENDING
+  GRANTED
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  INCOMPLETE
+}
+
+model User {
+  id                String             @id @default(cuid())
+  email             String             @unique
+  passwordHash      String
+  name              String?
+  role              String             @default("user") // "user" | "admin"
+  stripeCustomerId  String?            @unique
+  tradingViewAccess TradingViewAccess  @default(PENDING)
+  createdAt         DateTime           @default(now())
+
+  subscriptions     Subscription[]
+  addOnPurchases    AddOnPurchase[]
+
+  @@map("users")
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tier                 Int                // 1, 2, 3
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  currentPeriodEnd     DateTime
+  createdAt            DateTime           @default(now())
+
+  @@map("subscriptions")
+}
+
+model Section {
+  id         String   @id @default(cuid())
+  title      String
+  orderIndex Int
+  lessons    Lesson[]
+
+  @@map("sections")
+}
+
+model Lesson {
+  id             String  @id @default(cuid())
+  sectionId      String
+  section        Section @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  googleDriveUrl String
+  orderIndex     Int
+
+  @@map("lessons")
+}
+
+model LiveSession {
+  id          String   @id @default(cuid())
+  date        DateTime
+  title       String
+  description String?
+  meetingUrl  String
+
+  @@map("live_sessions")
+}
+
+model AddOnPurchase {
+  id                    String   @id @default(cuid())
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripePaymentIntentId String   @unique
+  sessionDate           DateTime?
+  fulfilled             Boolean  @default(false)
+  createdAt             DateTime @default(now())
+
+  @@map("add_on_purchases")
+}
+

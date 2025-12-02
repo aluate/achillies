@@ -1,0 +1,93 @@
+========================================
+  CORPORATE CRASHOUT - START HERE
+========================================
+
+WELCOME! This is your quick-start guide.
+
+For the COMPLETE detailed instructions, open:
+  START_HERE.md
+
+========================================
+
+QUICK START (5 Steps):
+----------------------
+
+1. INSTALL NODE.JS
+   - Go to: https://nodejs.org/
+   - Download LTS version (big green button)
+   - Install it (accept defaults)
+   - RESTART YOUR COMPUTER (important!)
+   - Verify: Open Command Prompt, type "node -v"
+   - Should see version number (like v20.x.x)
+
+2. OPEN PROJECT FOLDER
+   - Find the "corporate-crashout" folder
+   - Open File Explorer to that folder
+   - Click in address bar, type "cmd", press Enter
+   - Command Prompt opens in that folder
+
+3. INSTALL DEPENDENCIES
+   - In Command Prompt, type: npm install
+   - Press Enter
+   - Wait 2-5 minutes (lots of text scrolling)
+   - Done when cursor comes back
+
+4. SET UP DATABASE & ENV FILE
+   - I'll help you set up a free database (Supabase)
+   - Create .env file (copy from .env.example if it exists)
+   - Fill in DATABASE_URL (I'll send you this)
+   - Add Stripe test keys (I'll send these too)
+
+5. BOOTSTRAP & START
+   - Type: npm run bootstrap
+   - Wait for it to finish
+   - Write down admin credentials it shows
+   - Type: npm run dev
+   - Open browser to: http://localhost:3000
+
+========================================
+
+THAT'S IT! Your site is running locally.
+
+========================================
+
+IMPORTANT FILES TO KNOW:
+------------------------
+
+START_HERE.md          - Complete detailed guide (read this!)
+QUICK_START.md         - Quick reference
+README.md              - Full documentation
+SETUP_CHECKLIST.md     - Pre-flight checklist
+
+brand/BRAND_BRIEF.md   - Your brand guidelines (FILL THIS OUT!)
+                        Use brand/BRAND_PROMPT_GENERATOR.md
+                        with AI to help create it
+
+START_LOCAL.bat        - Double-click to start (after setup)
+
+========================================
+
+IF SOMETHING GOES WRONG:
+------------------------
+
+1. Check the error message
+2. Go back to that step in START_HERE.md
+3. Take a screenshot of the error
+4. Send it to me with what step you were on
+5. I'll help you fix it!
+
+========================================
+
+NEXT STEPS:
+-----------
+
+After site is running:
+- Complete brand brief (brand/BRAND_BRIEF.md)
+- Test all features
+- Customize content
+- Prepare for production
+
+See START_HERE.md for details.
+
+========================================
+
