@@ -6,6 +6,15 @@ import { prisma } from '@/lib/db'
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Stripe is enabled
+    const { STRIPE_ENABLED } = await import('@/lib/stripe')
+    if (!STRIPE_ENABLED) {
+      return NextResponse.json(
+        { error: 'Stripe is currently disabled. Payment features are not available.' },
+        { status: 503 }
+      )
+    }
+
     const session = await getServerSession(authOptions)
     if (!session?.user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

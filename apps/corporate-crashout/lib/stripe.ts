@@ -1,13 +1,19 @@
 import Stripe from 'stripe'
 
+// Stripe is optional - can be disabled via env var
+export const STRIPE_ENABLED = process.env.STRIPE_ENABLED !== 'false' && !!process.env.STRIPE_SECRET_KEY
+
 // Initialize Stripe client lazily to allow app to build without Stripe keys
 let stripeInstance: Stripe | null = null
 
 function getStripeClient(): Stripe {
+  if (!STRIPE_ENABLED) {
+    throw new Error('Stripe is disabled. Set STRIPE_ENABLED=true and STRIPE_SECRET_KEY to enable.')
+  }
   if (!stripeInstance) {
     const secretKey = process.env.STRIPE_SECRET_KEY
     if (!secretKey) {
-      throw new Error('STRIPE_SECRET_KEY is not set. Stripe features will not work.')
+      throw new Error('STRIPE_SECRET_KEY is not set')
     }
     stripeInstance = new Stripe(secretKey, {
       apiVersion: '2025-02-24.acacia',

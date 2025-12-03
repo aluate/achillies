@@ -11,8 +11,19 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
+  // Check if Stripe is enabled
+  const { STRIPE_ENABLED } = await import('@/lib/stripe')
+  if (!STRIPE_ENABLED) {
+    console.log('Stripe webhook received but Stripe is disabled - ignoring')
+    return NextResponse.json({ received: true, message: 'Stripe disabled' }, { status: 200 })
+  }
+
   const body = await request.text()
   const signature = request.headers.get('stripe-signature')!
+
+  if (!signature || !webhookSecret) {
+    return NextResponse.json({ error: 'Webhook signature or secret missing' }, { status: 400 })
+  }
 
   let event: Stripe.Event
 
@@ -113,7 +124,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   let status: 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'INCOMPLETE' = 'ACTIVE'
   if (subscription.status === 'active' || subscription.status === 'trialing') {
     status = 'ACTIVE'
-  } else if (subscription.status === 'canceled') {
+  } else if (subscription.status === 'canceled' || subscription.status === 'canceled_at_period_end') {
     status = 'CANCELED'
   } else if (subscription.status === 'past_due' || subscription.status === 'unpaid') {
     status = 'PAST_DUE'
