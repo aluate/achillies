@@ -124,7 +124,7 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   let status: 'ACTIVE' | 'CANCELED' | 'PAST_DUE' | 'INCOMPLETE' = 'ACTIVE'
   if (subscription.status === 'active' || subscription.status === 'trialing') {
     status = 'ACTIVE'
-  } else if (subscription.status === 'canceled' || subscription.status === 'canceled_at_period_end') {
+  } else if (subscription.status === 'canceled') {
     status = 'CANCELED'
   } else if (subscription.status === 'past_due' || subscription.status === 'unpaid') {
     status = 'PAST_DUE'
