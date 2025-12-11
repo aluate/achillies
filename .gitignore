@@ -5,3 +5,6 @@ node_modules/
 .next/
 desktop.ini
 *.ini
+
+# Local secrets
+apps/supabase pw.txt
